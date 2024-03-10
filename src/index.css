@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -28,6 +28,55 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+} */
+
+.display {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border: 6px solid pink;
+  width: 80%;
+  margin: 0 auto;
+
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.name {
+  margin: 13px;
+  padding: 13px;
+  background-color: pink;
+  font-size: 16px;
+  border-radius: 5px;
+  color: #b32121;
+}
+
+.boy {
+  margin: 13px;
+  padding: 13px;
+  border-radius: 5px;
+  background-color: lightskyblue;
+  font-size: 16px;
+  color: rgb(8, 64, 96);
+}
+
+.forLine {
+  border: 1px solid rgb(176, 176, 176);
+  width: 90px;
+}
+
+h2 {
+  color: gray;
+}
+
+input {
+  padding: 10px;
 }
 
 h1 {
@@ -53,6 +102,7 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
 
 @media (prefers-color-scheme: light) {
   :root {

@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from "react";
+import SearchBar from "./SearchBar";
+import GenderFilters from "./GenderFilters";
+import NameList from "./NameList";
+import Favorites from "./Favorites";
+import namesData from "./babyNamesData.json"; // Replace with the actual path
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [names, setNames] = useState([]);
+  const [favourites, setFavourites] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [genderFilter, setGenderFilter] = useState("all"); // 'all', 'm', or 'f'
+
+  useEffect(() => {
+    const filteredNames = namesData
+      .filter(
+        (name) =>
+          (genderFilter === "all" || name.sex === genderFilter) &&
+          name.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    setNames(filteredNames);
+  }, [searchTerm, genderFilter]);
+
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
+  };
+
+  const handleGenderFilter = (selectedGender) => {
+    setGenderFilter(selectedGender);
+  };
+
+  const addToFavourites = (id) => {
+    const selectedName = names.find((name) => name.id === id);
+    setFavourites([...favourites, selectedName]);
+    const updatedNames = names.filter((name) => name.id !== id);
+    setNames(updatedNames);
+  };
+
+  const removeFromFavourites = (id) => {
+    const selectedName = favourites.find((name) => name.id === id);
+    setNames([...names, selectedName]);
+    const updatedFavourites = favourites.filter((name) => name.id !== id);
+    setFavourites(updatedFavourites);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="display">
+      <SearchBar searchTerm={searchTerm} handleSearch={handleSearch} />
+      <GenderFilters
+        genderFilter={genderFilter}
+        handleGenderFilter={handleGenderFilter}
+      />
+      <Favorites
+        favourites={favourites}
+        removeFromFavourites={removeFromFavourites}
+      />
+      <div className="forLine"></div>
+      <NameList names={names} addToFavourites={addToFavourites} />
+    </div>
+  );
+};
 
-export default App
+export default App;
